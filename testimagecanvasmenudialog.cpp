@@ -13,7 +13,6 @@
 
 #include "fileio.h"
 #include "imagecanvas.h"
-#include "richelbilderbeekprogram.h"
 #include "trace.h"
 #include "testtimer.h"
 #pragma GCC diagnostic pop
@@ -90,11 +89,12 @@ ribi::About ribi::TestImageCanvasMenuDialog::GetAbout() const noexcept
     "Richel Bilderbeek",
     "TestImageCanvas",
     "tests the ImageCanvas class",
-    "the 9th of January 2014",
+    "December 3rd of 2015",
     "2014-2015",
     "http://www.richelbilderbeek.nl/TooTestImageCanvas.htm",
     GetVersion(),
-    GetVersionHistory());
+    GetVersionHistory()
+  );
   a.AddLibrary("Canvas version: " + Canvas::GetVersion());
   a.AddLibrary("ImageCanvas version: " + ImageCanvas::GetVersion());
   a.AddLibrary("Trace version: " + Trace::GetVersion());
@@ -115,24 +115,16 @@ ribi::Help ribi::TestImageCanvasMenuDialog::GetHelp() const noexcept
   );
 }
 
-boost::shared_ptr<const ribi::Program> ribi::TestImageCanvasMenuDialog::GetProgram() const noexcept
-{
-  const boost::shared_ptr<const Program> p {
-    new ProgramTestImageCanvas
-  };
-  assert(p);
-  return p;
-}
-
 std::string ribi::TestImageCanvasMenuDialog::GetVersion() const noexcept
 {
-  return "1.0";
+  return "2.0";
 }
 
 std::vector<std::string> ribi::TestImageCanvasMenuDialog::GetVersionHistory() const noexcept
 {
   return {
-    "2014-01-09: version 1.0: initial version"
+    "2014-01-09: version 1.0: initial version",
+    "2015-12-03: version 2.0: moved to own GitHub"
   };
 }
 
@@ -143,6 +135,10 @@ void ribi::TestImageCanvasMenuDialog::Test() noexcept
     static bool is_tested{false};
     if (is_tested) return;
     is_tested = true;
+  }
+  {
+    ImageCanvas();
+    FileIo();
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   {
@@ -165,12 +161,10 @@ void ribi::TestImageCanvasMenuDialog::Test() noexcept
         = i / 2 ? CanvasColorSystem::invert : CanvasColorSystem::normal;
       const CanvasCoordinatSystem coordinat_system
         = i % 2 ? CanvasCoordinatSystem::graph : CanvasCoordinatSystem::screen;
-      const boost::shared_ptr<const ImageCanvas> c {
-        new ImageCanvas(temp_filename,20,color_system,coordinat_system)
-      };
+      const ImageCanvas c(temp_filename,20,color_system,coordinat_system);
       std::stringstream s;
-      s << (*c);
-      TRACE(s.str());
+      s << c;
+      //TRACE(s.str());
       assert(!s.str().empty());
     }
     fileio::FileIo().DeleteFile(temp_filename);

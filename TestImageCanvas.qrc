@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/ToolTestImageCanvas/images">
-        <file>ToolTestImageCanvasWelcome.png</file>
         <file>R.png</file>
+        <file>TestImageCanvasWelcome.png</file>
     </qresource>
 </RCC>
